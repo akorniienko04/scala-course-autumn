@@ -6,9 +6,10 @@ object arithmetic:
 
   type Number = Long
 
-  val Z: Number => Number = value => value match
-    case 0 => 1
-    case _ => 0
+  val Z: Number => Number = value =>
+    value match
+      case 0 => 1
+      case _ => 0
 
   val S: Number => Number = value => value + 1
 
