@@ -6,7 +6,10 @@ object arithmetic:
 
   type Number = Long
 
-  val Z: Number => Number = value => if value == 0 then 1 else 0
+  val Z: Number => Number = value => value match
+    case 0 => 1
+    case _ => 0
+
   val S: Number => Number = value => value + 1
 
   /**
@@ -17,8 +20,9 @@ object arithmetic:
 
       @tailrec
       def loop(left: Number, right: Number): Number =
-        if right == 0 then left
-        else loop(S(left), right - 1)
+        right match
+          case 0 => left
+          case _ => loop(S(left), right - 1)
 
       loop(l, r)
 
@@ -30,8 +34,9 @@ object arithmetic:
 
       @tailrec
       def loop(acc: Number, times: Number): Number =
-        if times == 0 then acc
-        else loop(addition(acc, l), times - 1)
+        times match
+          case 0 => acc
+          case _ => loop(addition(acc, l), times - 1)
 
       loop(0, r)
 
@@ -43,7 +48,8 @@ object arithmetic:
 
       @tailrec
       def loop(res: Number, exp: Number): Number =
-        if exp == 0 then res
-        else loop(multiplication(res, osnova), exp - 1)
+        exp match
+          case 0 => res
+          case _ => loop(multiplication(res, osnova), exp - 1)
 
       loop(1, p)
