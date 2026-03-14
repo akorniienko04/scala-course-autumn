@@ -15,7 +15,6 @@ object booleans:
     case True  => False
     case False => True
 
-
   val conjunction: (Boolean, => Boolean) => Boolean = (x, y) =>
     x match
       case False => False
@@ -44,11 +43,11 @@ object booleans:
     x match
       case True =>
         y match
-          case True => True
+          case True  => True
           case False => False
       case False =>
         y match
-          case True => False
+          case True  => False
           case False => True
 
   extension (value: Boolean)
@@ -72,7 +71,7 @@ object booleans:
     @tailrec
     def foldReq(list: List[Boolean], acc: Boolean): Boolean =
       list match
-        case Nil => acc
+        case Nil          => acc
         case head :: tail => foldReq(tail, operation(acc, head))
 
     foldReq(list, unit)
