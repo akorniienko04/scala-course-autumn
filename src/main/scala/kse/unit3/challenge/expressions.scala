@@ -73,10 +73,7 @@ object expressions:
   case class Implication(left: Expression, right: Expression) extends Expression:
 
     def evaluate: Expression =
-      (left.evaluate, right.evaluate) match
-        case (False, _) => True
-        case (True, r)  => r
-        case (l, r)     => Implication(l, r)
+      (!left ∨ right).evaluate
 
     def substitute(variable: Variable, substitution: Expression): Expression =
       Implication(left.substitute(variable, substitution), right.substitute(variable, substitution))
@@ -91,11 +88,7 @@ object expressions:
       val r = right.evaluate
 
       if l == r then True
-      else
-        (l, r) match
-          case (True, False) => False
-          case (False, True) => False
-          case _             => if l.toString <= r.toString then Equivalence(l, r) else Equivalence(r, l)
+      else ((l → r) ∧ (r → l)).evaluate
 
     def substitute(variable: Variable, substitution: Expression): Expression =
       Equivalence(left.substitute(variable, substitution), right.substitute(variable, substitution))

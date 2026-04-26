@@ -65,9 +65,7 @@ object ConjunctionEvaluationSpecification extends Properties("Conjunction Evalua
     (expression ∧ False).evaluate == False
 
   property("left ∧ right should be correctly evaluated") = forAll: (left: Boolean, right: Boolean) =>
-    (left ∧ right).evaluate == ((left, right) match
-      case (True, True) => True
-      case _            => False)
+    (left ∧ right).evaluate == (left.evaluate ∧ right.evaluate).evaluate
 
 end ConjunctionEvaluationSpecification
 
@@ -86,9 +84,7 @@ object DisjunctionEvaluationSpecification extends Properties("Disjunction Evalua
     (expression ∨ False).evaluate == expression.evaluate
 
   property("left ∨ right should be correctly evaluated") = forAll: (left: Boolean, right: Boolean) =>
-    (left ∨ right).evaluate == ((left, right) match
-      case (False, False) => False
-      case _              => True)
+    (left ∨ right).evaluate == (left.evaluate ∨ right.evaluate).evaluate
 
 end DisjunctionEvaluationSpecification
 
@@ -101,9 +97,7 @@ object ImplicationEvaluationSpecification extends Properties("Implication Evalua
     (False → expression).evaluate == True
 
   property("left → right should be correctly evaluated") = forAll: (left: Boolean, right: Boolean) =>
-    (left → right).evaluate == ((left, right) match
-      case (True, False) => False
-      case _             => True)
+    (left → right).evaluate == (!left ∨ right).evaluate
 
 end ImplicationEvaluationSpecification
 
@@ -112,17 +106,14 @@ object EquivalenceEvaluationSpecification extends Properties("Equivalence Evalua
   property("Reflexivity") = forAll: (expression: Expression) =>
     (expression ↔ expression).evaluate == True
 
-  property("Symmetry") = forAll: (left: Expression, right: Expression) =>
+  property("Symmetry") = forAll: (left: Boolean, right: Boolean) =>
     (left ↔ right).evaluate == (right ↔ left).evaluate
 
-  property("Transitivity") = forAll: (boolean: Boolean) =>
-    ((boolean ↔ boolean).evaluate == True) && ((boolean ↔ boolean).evaluate == True)
+  property("Transitivity") = forAll: (left: Boolean, middle: Boolean, right: Boolean) =>
+    (((left ↔ middle) ∧ (middle ↔ right)) → (left ↔ right)).evaluate == True
 
   property("left ↔ right should be correctly evaluated") = forAll: (left: Boolean, right: Boolean) =>
-    (left ↔ right).evaluate == ((left, right) match
-      case (True, True)   => True
-      case (False, False) => True
-      case _              => False)
+    (left ↔ right).evaluate == ((left → right) ∧ (right → left)).evaluate
 
 end EquivalenceEvaluationSpecification
 
