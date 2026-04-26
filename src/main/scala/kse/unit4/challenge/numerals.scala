@@ -10,7 +10,7 @@ object numerals:
 
     def predecessor: Numeral
 
-    def successor: Numeral = new Successor(this)
+    def successor: Numeral = Successor(this)
 
     @targetName("greater than")
     infix def >(that: Numeral): Boolean
@@ -72,7 +72,7 @@ object numerals:
       case Successor(m) => this.predecessor > m
 
     @targetName("addition")
-    infix def +(that: Numeral): Numeral = new Successor(n + that)
+    infix def +(that: Numeral): Numeral = Successor(n + that)
 
     // Optional challenge.
     @targetName("subtraction")

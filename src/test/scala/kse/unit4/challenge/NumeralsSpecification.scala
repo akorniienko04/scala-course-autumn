@@ -77,4 +77,28 @@ object NumeralsSpecification extends Properties("Numerals"):
     (a == b) == (b == a)
   }
 
+  property("zero string") = Prop(Zero.toString == "zero")
+
+  property("successor string") = forAll { (n: Numeral) =>
+    Successor(n).toString == s"Nat($n)"
+  }
+
+  property("unapply") = forAll { (n: Numeral) =>
+    Successor(n) match
+      case Successor(p) => p == n
+      case _            => false
+  }
+
+  property("n is less than its successor") = forAll { (n: Numeral) =>
+    n < Successor(n)
+  }
+
+  property("addition is commutative") = forAll { (a: Numeral, b: Numeral) =>
+    a + b == b + a
+  }
+
+  property("add then subtract") = forAll { (a: Numeral, b: Numeral) =>
+    (a + b) - b == a
+  }
+
 end NumeralsSpecification
