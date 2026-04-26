@@ -6,10 +6,7 @@ object arithmetic:
 
   type Number = Long
 
-  val Z: Number => Number = value =>
-    value match
-      case 0 => 1
-      case _ => 0
+  val Z: Number => Number = _ => 0
 
   val S: Number => Number = value => value + 1
 
@@ -18,6 +15,9 @@ object arithmetic:
    */
   val addition: (Number, Number) => Number =
     (l, r) =>
+
+      require(l >= 0, "Left must be non negative")
+      require(r >= 0, "Right must be non negative")
 
       @tailrec
       def loop(left: Number, right: Number): Number =
@@ -33,13 +33,16 @@ object arithmetic:
   val multiplication: (Number, Number) => Number =
     (l, r) =>
 
+      require(l >= 0, "Left must be non negative")
+      require(r >= 0, "Right must be non negative")
+
       @tailrec
       def loop(acc: Number, times: Number): Number =
         times match
           case 0 => acc
           case _ => loop(addition(acc, l), times - 1)
 
-      loop(0, r)
+      loop(Z(0), r)
 
   /**
    * Optional task: make `power` tail-recursive.
@@ -47,10 +50,13 @@ object arithmetic:
   val power: (Number, Number) => Number =
     (osnova, p) =>
 
+      require(p >= 0, "Power must be non negative")
+      require(osnova != 0 || p != 0)
+
       @tailrec
       def loop(res: Number, exp: Number): Number =
         exp match
           case 0 => res
           case _ => loop(multiplication(res, osnova), exp - 1)
 
-      loop(1, p)
+      loop(S(Z(0)), p)
