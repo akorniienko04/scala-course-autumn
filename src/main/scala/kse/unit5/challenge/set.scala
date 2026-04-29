@@ -66,9 +66,8 @@ object set:
 
     override def toString: String = "[*]"
 
-    override def equals(obj: Any): Boolean = obj match
-      case _: Empty.type => true
-      case _             => false
+    override def equals(obj: Any): Boolean =
+      obj.isInstanceOf[Empty]
 
   end Empty
 
