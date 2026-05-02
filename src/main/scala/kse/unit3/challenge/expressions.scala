@@ -95,6 +95,24 @@ object expressions:
 
     override def toString: String =
       s"($left <-> $right)"
+      
+  
+  case class XOR(left: Expression, right: Expression) extends Expression:
+      
+    def evaluate: Expression =
+      val l = left.evaluate
+      val r = right.evaluate
+
+      (left.evaluate, right.evaluate) match
+        case (True, True) => False
+        case (True, False) => True
+        case (False, True) => True
+        case (False, False) => False
+        
+      
+    def subtitude(variable: Variable, substitution: Expression): Expression =
+      XOR(left.substitute(variable, substitution), right.substitute(variable, substitution))
+          
 
   given Conversion[String, Variable] with
     def apply(str: String): Variable = Variable(str)
